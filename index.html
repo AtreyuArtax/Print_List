@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Grocery List Filter (Markdown → Unchecked Only)</title>
+<style>
+  :root{
+    --fg:#111; --bg:#fafafa; --muted:#666; --accent:#111;
+    --section-gap: 1.1rem;
+    --line-gap: .35rem;
+    --title-size: 1.6rem;
+    --heading-size: 1.05rem;
+    --item-size: 1rem;
+  }
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:900px;margin:auto;padding:16px 14px 40px}
+  h1{font-size:var(--title-size);margin:0 0 12px 0;line-height:1.2}
+  .controls{
+    display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px 0
+  }
+  textarea{
+    width:100%; min-height: 260px; resize: vertical;
+    font: 14px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    padding:12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#000;
+  }
+  button{
+    cursor:pointer;border:1px solid #111;background:#111;color:#fff;
+    padding:10px 14px;border-radius:8px;font-weight:600
+  }
+  button.secondary{background:#fff;color:#111}
+  .hint{color:var(--muted);font-size:.9rem}
+  .out{
+    margin-top:18px;padding:16px;border:1px dashed #ccc;border-radius:10px;background:#fff
+  }
+  .list-title{font-size:1.3rem;font-weight:800;margin:0 0 8px}
+  .section{break-inside: avoid;margin-top: var(--section-gap)}
+  .section h2{
+    font-size:var(--heading-size);margin:0 0 6px;border-bottom:1px solid #e7e7e7;padding-bottom:4px
+  }
+  ul.items{list-style:none;margin:0;padding:0;display:grid;gap:var(--line-gap)}
+  li.item{
+    display:flex;align-items:center;gap:.55rem;font-size:var(--item-size)
+  }
+  .cb{
+    width:1.05rem;height:1.05rem;flex:0 0 auto;
+    border:1.8px solid #111;border-radius:4px;display:inline-block
+  }
+  .item-label{flex:1}
+  .empty-note{color:var(--muted);font-style:italic;margin:.4rem 0 .2rem}
+
+  /* Print: clean, high-contrast, two columns when space allows */
+  @media print{
+    :root{ --title-size: 1.8rem; --heading-size: 1.15rem; --item-size: 1.05rem }
+    body{background:#fff}
+    h1 {display:none !important;} /* Hide page title when printing */
+    .controls, .hint, textarea{display:none !important}
+    .out{border:0;padding:0;background:transparent}
+    .print-columns{column-count: 2; column-gap: 24px;}
+    .section{break-inside: avoid}
+    @page{margin: 14mm}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Grocery List Filter</h1>
+  <div class="hint">
+    Paste your list (supports GitHub-style <code>- [ ]</code>/<code>- [x]</code> and your <code>✓</code>/<code>◦</code> style). Click “Show Unchecked”.
+  </div>
+  <textarea id="src" placeholder="Paste your markdown grocery list here..."></textarea>
+  <div class="controls">
+    <button id="btn-filter">Show Unchecked</button>
+    <button class="secondary" id="btn-sample">Load Sample</button>
+    <button class="secondary" id="btn-print" title="Open the browser print dialog">Print</button>
+  </div>
+
+  <div id="out" class="out" aria-live="polite"></div>
+</div>
+
+<script>
+const re = {
+  atx: /^\s*(#{1,6})\s+(.*)\s*$/,
+  mdUnchecked: /^\s*[-*+]\s*\[\s\]\s+(.*)$/,
+  mdChecked:   /^\s*[-*+]\s*\[[xX]\]\s+(.*)$/,
+  yourChecked: /^\s*✓\s+(.*)$/,
+  yourUnchecked:/^\s*◦\s+(.*)$/,
+  fallbackBullet:/^\s*[-*+]\s+(.*)$/
+};
+
+function parseMarkdownList(src){
+  const lines = src.split(/\r?\n/);
+  let title = null;
+  const sections = [];
+  let currentSection = null;
+
+  function ensureSection(name){
+    currentSection = { name: name.trim(), items: [] };
+    sections.push(currentSection);
+  }
+
+  for(let i=0;i<lines.length;i++){
+    const raw = lines[i];
+    const line = raw.replace(/\s+$/,'');
+    if(!line.trim()) continue;
+
+    const mAtx = line.match(re.atx);
+    if(mAtx){
+      const level = mAtx[1].length;
+      const text = mAtx[2].trim();
+      if(level === 1 && !title){
+        title = text;
+      }else{
+        ensureSection(text);
+      }
+      continue;
+    }
+
+    let isItem = false, checked = false, text = "";
+
+    let m;
+    if((m = line.match(re.mdChecked))){
+      isItem = true; checked = true; text = m[1];
+    } else if((m = line.match(re.mdUnchecked))){
+      isItem = true; checked = false; text = m[1];
+    } else if((m = line.match(re.yourChecked))){
+      isItem = true; checked = true; text = m[1];
+    } else if((m = line.match(re.yourUnchecked))){
+      isItem = true; checked = false; text = m[1];
+    } else if((m = line.match(re.fallbackBullet))){
+      isItem = true; checked = false; text = m[1];
+    }
+
+    if(isItem){
+      if(!currentSection){
+        ensureSection("Items");
+      }
+      if(!checked){
+        currentSection.items.push(text.trim());
+      }
+      continue;
+    }
+
+    if(!title){
+      title = line.trim();
+    }else{
+      ensureSection(line.trim());
+    }
+  }
+
+  const filteredSections = sections.filter(s => s.items.length > 0);
+  return { title: title || "List", sections: filteredSections };
+}
+
+function renderOutput(model){
+  const out = document.getElementById('out');
+  out.innerHTML = "";
+  const wrap = document.createElement('div');
+  wrap.className = 'print-columns';
+
+  const t = document.createElement('div');
+  t.className = 'list-title';
+  t.textContent = model.title;
+  out.appendChild(t);
+  out.appendChild(wrap);
+
+  if(model.sections.length === 0){
+    const p = document.createElement('div');
+    p.className = 'empty-note';
+    p.textContent = 'All items are checked. Nothing left to buy 🎉';
+    wrap.appendChild(p);
+    return;
+  }
+
+  for(const section of model.sections){
+    const sec = document.createElement('section');
+    sec.className = 'section';
+    const h = document.createElement('h2');
+    h.textContent = section.name;
+    sec.appendChild(h);
+
+    const ul = document.createElement('ul');
+    ul.className = 'items';
+    for(const item of section.items){
+      const li = document.createElement('li');
+      li.className = 'item';
+
+      const cb = document.createElement('span');
+      cb.className = 'cb';
+      cb.setAttribute('aria-hidden','true');
+
+      const label = document.createElement('span');
+      label.className = 'item-label';
+      label.textContent = item;
+
+      li.appendChild(cb);
+      li.appendChild(label);
+      ul.appendChild(li);
+    }
+    sec.appendChild(ul);
+    wrap.appendChild(sec);
+  }
+}
+
+function filterNow(){
+  const src = document.getElementById('src').value || "";
+  const model = parseMarkdownList(src);
+  renderOutput(model);
+}
+
+document.getElementById('btn-filter').addEventListener('click', filterNow);
+document.getElementById('btn-print').addEventListener('click', () => window.print());
+document.getElementById('btn-sample').addEventListener('click', () => {
+  const sample = `Costco list
+Snacks
+\t✓\tGranola bars kyle
+\t✓\tMade Good bars
+\t✓\tGranola bars kristy
+\t◦\tHeavenly hunk
+\t◦\tFruit snacks
+
+Baby
+\t✓\tDiaper wipes
+\t✓\tPull ups
+
+Grocery
+\t◦\tParmesan cheese 
+\t◦\tPasta sauce 
+\t◦\tButter chicken sauce
+\t◦\tPeanut butter
+\t◦\tAlmond simple mills crackers
+\t◦\tTuna 
+\t◦\tKirkland almond nut butter
+\t✓\tCoffee
+\t✓\tHoney
+
+# Example of pure Markdown checklist
+- [ ] Salsa
+- [x] Crackers
+- [ ] Yogurt drinks`;
+  document.getElementById('src').value = sample;
+  filterNow();
+});
+
+let tId;
+document.getElementById('src').addEventListener('input', () => {
+  clearTimeout(tId);
+  tId = setTimeout(filterNow, 250);
+});
+
+/* --- iOS Shortcut / URL-hash payload support --- */
+(function initFromHash(){
+  const rawHash = location.hash.startsWith('#') ? location.hash.slice(1) : location.hash;
+  if(!rawHash) return;
+
+  const params = new URLSearchParams(rawHash);
+  if(!params.has('text') && location.search.length > 1){
+    new URLSearchParams(location.search).forEach((v,k)=>params.set(k,v));
+  }
+
+  const text = params.get('text');
+  const auto = params.get('autoprint');
+
+  if(text){
+    let decoded = "";
+    try { decoded = decodeURIComponent(text); }
+    catch {
+      try { decoded = atob(text); } catch { decoded = text; }
+    }
+    document.getElementById('src').value = decoded;
+    filterNow();
+
+    if(auto === '1' || (auto && auto.toLowerCase() === 'true')){
+      setTimeout(() => window.print(), 300);
+    }
+  }
+})();
+</script>
+</body>
+</html>
