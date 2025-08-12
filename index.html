@@ -1,313 +1,38 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Print a List (Quadrant layout)</title>
-<style>
-  :root{
-    --fg:#111; --bg:#fafafa; --muted:#666;
-    --section-gap: 1.0rem; --line-gap: .32rem;
-    --title-size: 1.55rem; --heading-size: 1.05rem; --item-size: 1rem;
-
-    /* print tuning */
-    --fold-gutter: 18mm;              /* empty space where folds happen */
-    --print-margin-top: 8mm;
-    --print-margin-right: 8mm;
-    --print-margin-bottom: 8mm;
-    --print-margin-left: 8mm;
-    --title-block: 18mm; /* estimated title+gap height */
-  }
-
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-  .wrap{max-width:900px;margin:auto;padding:16px 14px 40px}
-  h1{font-size:var(--title-size);margin:0 0 12px;line-height:1.2}
-  .hint{color:var(--muted);font-size:.9rem;margin-bottom:8px}
-
-  textarea{
-    width:100%; min-height:240px; resize:vertical;
-    font:14px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-    padding:12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#000
-  }
-
-  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 14px}
-  .controls label{font-size:.9rem;color:#111}
-  select{padding:8px 10px;border:1px solid #ddd;border-radius:8px;background:#fff}
-  button{cursor:pointer;border:1px solid #111;background:#111;color:#fff;padding:10px 14px;border-radius:8px;font-weight:600}
-  button.secondary{background:#fff;color:#111}
-
-  /* Output */
-  .out{margin-top:16px;padding:12px;border:1px dashed #ccc;border-radius:10px;background:#fff}
-  .list-title{font-size:1.3rem;font-weight:800;margin:0 0 8px}
-  .section{break-inside:avoid;margin-top:var(--section-gap)}
-  .section h2{font-size:var(--heading-size);margin:0 0 6px;border-bottom:1px solid #e7e7e7;padding-bottom:4px}
-  ul.items{list-style:none;margin:0;padding:0;display:grid;gap:var(--line-gap)}
-  li.item{display:flex;align-items:center;gap:.55rem;font-size:var(--item-size)}
-  .cb{width:1.05rem;height:1.05rem;flex:0 0 auto;border:1.8px solid #111;border-radius:4px;display:inline-block}
-  .item-label{flex:1}
-  .empty-note{color:var(--muted);font-style:italic;margin:.4rem 0 .2rem}
-
-  /* Quadrants container: explicit 2×2 grid */
-  .grid4{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    grid-auto-rows: auto;
-    gap: 16px; /* screen spacing; print gap gets replaced by fold gutter */
-  }
-  .quad{break-inside:avoid}
-
-  /* Print */
-  @media print{
-    body{background:#fff}
-    h1,.hint,textarea,.controls{display:none !important}
-    .wrap{ padding:0 !important; margin:0 !important; max-width:none !important; }
-    .out{ border:0; padding:0 !important; background:transparent; margin:0 !important; }
-    .list-title{ margin-bottom:.4rem; }
-
-    @page{
-      size:letter;
-      margin: var(--print-margin-top) var(--print-margin-right) var(--print-margin-bottom) var(--print-margin-left);
-    }
-
-    .page{ height:100vh; display:block; }
-
-    /* exact fold gutters at the page center */
-    .grid4{
-      grid-template-columns: calc(50% - var(--fold-gutter)/2) calc(50% - var(--fold-gutter)/2);
-      grid-template-rows:    calc((100vh - var(--title-block) - var(--fold-gutter))/2)
-                             calc((100vh - var(--title-block) - var(--fold-gutter))/2);
-      column-gap: var(--fold-gutter);
-      row-gap:    var(--fold-gutter);
-    }
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Print a List (Quadrant layout)</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="wrap">
-  <h1>Print a List</h1>
-  <div class="hint">Paste your list (supports GitHub <code>- [ ]</code>/<code>- [x]</code> and your <code>✓</code>/<code>◦</code> style). It updates automatically below.</div>
+  <div class="wrap">
+    <h1>Print a List</h1>
+    <div class="hint">Paste your list (supports GitHub <code>- [ ]</code>/<code>- [x]</code> and your <code>✓</code>/<code>◦</code> style). It updates automatically below.</div>
 
-  <textarea id="src" placeholder="Paste your markdown grocery list here..."></textarea>
+    <textarea id="src" placeholder="Paste your markdown grocery list here..."></textarea>
 
-  <div class="controls">
-    <label for="opt-size">Text size:</label>
-    <select id="opt-size" aria-label="Text size">
-      <option value="normal" selected>Normal</option>
-      <option value="small">Small</option>
-      <option value="large">Large</option>
-      <option value="xlarge">X-Large</option>
-    </select>
+    <div class="controls">
+      <label for="opt-size">Text size:</label>
+      <select id="opt-size" aria-label="Text size">
+        <option value="normal" selected>Normal</option>
+        <option value="small">Small</option>
+        <option value="large">Large</option>
+        <option value="xlarge">X-Large</option>
+      </select>
 
-    <span style="flex:1"></span>
-    <button class="secondary" id="btn-sample">Load Sample</button>
-    <button class="secondary" id="btn-print" title="Open print dialog">Print</button>
+      <span style="flex:1"></span>
+      <button class="secondary" id="btn-sample">Load Sample</button>
+      <button class="secondary" id="btn-print" title="Open print dialog">Print</button>
+    </div>
+
+    <div class="page">
+      <div id="out" class="out" aria-live="polite"></div>
+    </div>
   </div>
 
-  <div class="page">
-    <div id="out" class="out" aria-live="polite"></div>
-  </div>
-</div>
-
-<script>
-/* -------- Parsing (unchanged) -------- */
-const re = {
-  atx: /^\s*(#{1,6})\s+(.*)\s*$/,
-  mdUnchecked: /^\s*[-*+]\s*\[\s\]\s+(.*)$/,
-  mdChecked:   /^\s*[-*+]\s*\[[xX]\]\s+(.*)$/,
-  yourChecked: /^\s*✓\s+(.*)$/,
-  yourUnchecked:/^\s*◦\s+(.*)$/,
-  fallbackBullet:/^\s*[-*+]\s+(.*)$/
-};
-function parseMarkdownList(src){
-  const lines = src.split(/\r?\n/);
-  let title=null; const sections=[]; let currentSection=null;
-  function ensureSection(name){ currentSection={name:name.trim(),items:[]}; sections.push(currentSection); }
-  for(const raw of lines){
-    const line = raw.replace(/\s+$/,''); if(!line.trim()) continue;
-    const mAtx = line.match(re.atx);
-    if(mAtx){ const level=mAtx[1].length; const text=mAtx[2].trim(); if(level===1 && !title){title=text;} else {ensureSection(text);} continue; }
-    let isItem=false, checked=false, text=""; let m;
-    if((m=line.match(re.mdChecked))){ isItem=true; checked=true;  text=m[1]; }
-    else if((m=line.match(re.mdUnchecked))){ isItem=true; checked=false; text=m[1]; }
-    else if((m=line.match(re.yourChecked))){ isItem=true; checked=true;  text=m[1]; }
-    else if((m=line.match(re.yourUnchecked))){ isItem=true; checked=false; text=m[1]; }
-    else if((m=line.match(re.fallbackBullet))){ isItem=true; checked=false; text=m[1]; }
-    if(isItem){ if(!currentSection) ensureSection('Items'); if(!checked) currentSection.items.push(text.trim()); continue; }
-    if(!title){ title=line.trim(); } else { ensureSection(line.trim()); }
-  }
-  return { title: title||'List', sections: sections.filter(s=>s.items.length>0) };
-}
-
-/* -------- Sequential quadrant flow --------
-   Fill TL → TR → BL → BR in order. We approximate capacity per quadrant
-   by item counts (section heading = weight 1, each item = weight 1).
-   This gives a stable, readable flow across sizes without measuring print pixels.
-*/
-function flowIntoQuadrants(sections){
-  const quads = [[],[],[],[]]; // TL, TR, BL, BR
-  const weights = sections.map(s => 1 + s.items.length);
-  const total = weights.reduce((a,b)=>a+b,0);
-  const target = Math.max(1, Math.round(total/4));
-  let qi = 0, acc = 0;
-  for(let i=0;i<sections.length;i++){
-    const s = sections[i];
-    const w = weights[i];
-    if(qi > 3) qi = 3; // safety
-    quads[qi].push(s);
-    acc += w;
-    if(acc >= target && qi < 3){ qi++; acc = 0; }
-  }
-  return quads;
-}
-
-function renderQuadrants(model){
-  const out = document.getElementById('out'); out.innerHTML = '';
-
-  const title = document.createElement('div');
-  title.className='list-title';
-  title.textContent = model.title;
-  out.appendChild(title);
-
-  if(model.sections.length===0){
-    const p=document.createElement('div');
-    p.className='empty-note'; p.textContent='All items are checked. Nothing left to buy 🎉';
-    out.appendChild(p); return;
-  }
-
-  const grid = document.createElement('div'); grid.className='grid4'; out.appendChild(grid);
-  const quads = flowIntoQuadrants(model.sections);
-
-  for(let q=0;q<4;q++){
-    const box = document.createElement('div'); box.className='quad'; grid.appendChild(box);
-    for(const section of quads[q]){
-      const sec = document.createElement('section'); sec.className='section';
-      const h = document.createElement('h2'); h.textContent = section.name; sec.appendChild(h);
-      const ul = document.createElement('ul'); ul.className='items';
-      for(const item of section.items){
-        const li=document.createElement('li'); li.className='item';
-        const cb=document.createElement('span'); cb.className='cb'; cb.setAttribute('aria-hidden','true');
-        const label=document.createElement('span'); label.className='item-label'; label.textContent=item;
-        li.appendChild(cb); li.appendChild(label); ul.appendChild(li);
-      }
-      sec.appendChild(ul); box.appendChild(sec);
-    }
-  }
-}
-
-function filterNow(){
-  const src = document.getElementById('src').value || '';
-  const model = parseMarkdownList(src);
-  renderQuadrants(model);
-}
-
-/* -------- Text size control -------- */
-const sizeMap = {
-  small:  { title:'1.35rem', heading:'0.95rem', item:'0.9rem'  },
-  normal: { title:'1.55rem', heading:'1.05rem', item:'1rem'    },
-  large:  { title:'1.75rem', heading:'1.15rem', item:'1.15rem' },
-  xlarge: { title:'1.95rem', heading:'1.25rem', item:'1.30rem' }
-};
-function applyTextSize(key){
-  const v = sizeMap[key] || sizeMap.normal;
-  const r = document.documentElement.style;
-  r.setProperty('--title-size',   v.title);
-  r.setProperty('--heading-size', v.heading);
-  r.setProperty('--item-size',    v.item);
-  filterNow();
-}
-(function initSize(){
-  const sel = document.getElementById('opt-size');
-  const saved = localStorage.getItem('optSize');
-  if(saved && sizeMap[saved]){ sel.value = saved; }
-  applyTextSize(sel.value);
-  sel.addEventListener('change', ()=>{
-    localStorage.setItem('optSize', sel.value);
-    applyTextSize(sel.value);
-  });
-})();
-
-/* -------- UI -------- */
-document.getElementById('btn-print').addEventListener('click', ()=>window.print());
-document.getElementById('btn-sample').addEventListener('click', ()=>{
-  const sample=`Costco List
-Snacks
-	✓	Granola bars
-	✓	Made Good bars
-	◦	Heavenly hunk
-	◦	Fruit snacks
-
-Baby
-	✓	Diaper wipes
-	✓	Pull ups
-
-Grocery
-	◦	Parmesan cheese 
-	◦	Pasta sauce 
-	◦	Butter chicken sauce
-	◦	Peanut butter
-	◦	Almond simple mills crackers
-	◦	Tuna 
-	◦	Kirkland almond nut butter
-	✓	Coffee
-	✓	Honey
-
-Side fridges
-	◦	Greek yogurt 
-
-Freezer
-	◦	Chicken strips
-
-Produce 
-	◦	Mushrooms
-	◦	Peppers CHECK DATE
-	◦	Bananas
-
-Dips fridge
-	◦	Hummus (2 pack)
-
-Back Dairy Fridge
-	✓	Eggs (30 tray)
-
-Meat fridge
-	◦	Feta cheese
-
-Bakery
-	◦	Tortillas keto
-	◦	bread
-
-Other
-	◦	Charmin toilet paper
-	◦	Plastic wrap
-
-# Example of pure Markdown checklist
-## Extra
-- [ ] Salsa
-- [x] Crackers
-- [ ] Yogurt drinks`;
-  document.getElementById('src').value=sample; filterNow();
-});
-
-/* Auto-render (debounced) */
-let _tid;
-document.getElementById('src').addEventListener('input', ()=>{
-  clearTimeout(_tid);
-  _tid = setTimeout(filterNow, 200);
-});
-
-/* Hash support (&text=... &autoprint=1) */
-(function initFromHash(){
-  const rawHash = location.hash.startsWith('#')?location.hash.slice(1):location.hash;
-  if(!rawHash){ filterNow(); return; }
-  const params = new URLSearchParams(rawHash);
-  const t = params.get('text'); const auto = params.get('autoprint');
-  if(t){
-    let decoded=''; try{decoded=decodeURIComponent(t);}catch{ try{decoded=atob(t);}catch{decoded=t;} }
-    document.getElementById('src').value=decoded; filterNow();
-    if(auto==='1' || (auto && auto.toLowerCase()==='true')) setTimeout(()=>window.print(),300);
-  } else {
-    filterNow();
-  }
-})();
-</script>
+  <!-- logic -->
+  <script defer src="main.js"></script>
 </body>
 </html>

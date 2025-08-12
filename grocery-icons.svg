@@ -1,0 +1,493 @@
+<!-- grocery-icons.svg -->
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     style="display:none">
+  <defs>
+    <style>
+      .s { stroke:#1a1a1a; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+    </style>
+
+    <!-- ========== VEGETABLES ========== -->
+
+    <!-- Broccoli -->
+    <symbol id="i-broccoli" viewBox="0 0 24 24" aria-label="broccoli">
+      <g class="s" fill="none">
+        <path fill="#3FA34D" d="M6.5 10.3c0-1.9 1.3-3.4 3.1-3.8.5-1.8 2.1-3 4-3s3.5 1.2 4 3c1.8.4 3.2 1.9 3.2 3.8 0 2.7-3 4.7-8.2 4.7S6.5 13 6.5 10.3z"/>
+        <path d="M12 12.2v7.1M9.2 19.3h5.6" />
+      </g>
+    </symbol>
+
+    <!-- Carrot -->
+    <symbol id="i-carrot" viewBox="0 0 24 24" aria-label="carrot">
+      <g class="s" fill="none">
+        <path fill="#F28C28" d="M5 19l8.4-8.4a3.2 3.2 0 014.5 0v0a3.2 3.2 0 010 4.5L9 23 5 19z"/>
+        <path fill="#6BBF59" d="M14.2 6.3C15.6 5 17 4.1 18.6 4c-1 1.7-2.4 3-4.1 4.1-.5-1-1-1.6-2-2.1 1-.7 1.3-1 1.7-1.7z"/>
+        <path d="M9.3 17.2l1.9 1.9M11.3 15.2l1.9 1.9" />
+      </g>
+    </symbol>
+
+    <!-- Tomato -->
+    <symbol id="i-tomato" viewBox="0 0 24 24" aria-label="tomato">
+      <g class="s" fill="none">
+        <ellipse cx="12" cy="14" rx="9" ry="6.5" fill="#E8483D"/>
+        <path fill="#2FAE62" d="M12 8c-1.2-1.2-3-2-4.5-1.3 2 .2 3.7 1.5 4.5 2.8.8-1.3 2.5-2.6 4.5-2.8C15 6 13.2 6.8 12 8z"/>
+        <path d="M12 8v2.2"/>
+      </g>
+    </symbol>
+
+    <!-- Cucumber -->
+    <symbol id="i-cucumber" viewBox="0 0 24 24" aria-label="cucumber">
+      <g class="s" fill="none">
+        <rect x="3" y="9" width="18" height="6" rx="3" fill="#2FAE62"/>
+        <circle cx="7" cy="12" r="0.9" fill="#CDEED6" stroke="none"/>
+        <circle cx="10" cy="12" r="0.9" fill="#CDEED6" stroke="none"/>
+        <circle cx="13" cy="12" r="0.9" fill="#CDEED6" stroke="none"/>
+        <circle cx="16" cy="12" r="0.9" fill="#CDEED6" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Bell Pepper -->
+    <symbol id="i-pepper" viewBox="0 0 24 24" aria-label="bell pepper">
+      <g class="s" fill="none">
+        <path fill="#EA4335" d="M6.2 9.5c1.8-1 4.3-1.5 5.8-1.5s4 .4 5.8 1.5c1 5.4.2 8.8-5.8 9.9-6-1.1-6.8-4.5-5.8-9.9z"/>
+        <path fill="#2FAE62" d="M9 8c0-1.8 1.4-3.2 3.2-3.2S15.4 6.2 15.4 8h-6.4z"/>
+        <path d="M12.2 5.2V3.5"/>
+      </g>
+    </symbol>
+
+    <!-- Mushroom -->
+    <symbol id="i-mushroom" viewBox="0 0 24 24" aria-label="mushroom">
+      <g class="s" fill="none">
+        <path fill="#E8DAC9" d="M4 11.5C4 7.4 7.6 4 12 4s8 3.4 8 7.5H4z"/>
+        <rect x="9" y="11.5" width="6" height="4.5" rx="2" fill="#D3C2AD"/>
+      </g>
+    </symbol>
+
+    <!-- Onion -->
+    <symbol id="i-onion" viewBox="0 0 24 24" aria-label="onion">
+      <g class="s" fill="none">
+        <path fill="#DFA1D6" d="M12 6c3.9 0 7 3.6 7 8s-3.1 8-7 8-7-3.6-7-8 3.1-8 7-8z"/>
+        <path fill="#7CC67A" d="M12 3c.2 1.8-1.2 2.8-1.9 3.8 0 1 .9 1.9 1.9 1.9s1.9-.9 1.9-1.9C13.2 5.8 11.8 4.8 12 3z"/>
+      </g>
+    </symbol>
+
+    <!-- Lettuce -->
+    <symbol id="i-lettuce" viewBox="0 0 24 24" aria-label="lettuce">
+      <g class="s" fill="none">
+        <path fill="#7BC96F" d="M12 3c2.2 0 4.4 1.7 5.5 3.9C18.7 9.9 17.2 14 12 21 6.8 14 5.3 9.9 6.5 6.9 7.6 4.7 9.8 3 12 3z"/>
+        <path d="M12 6c0 3-1.1 6.2-3.2 8.8M12 6c0 3 1.1 6.2 3.2 8.8"/>
+      </g>
+    </symbol>
+
+    <!-- Potato -->
+    <symbol id="i-potato" viewBox="0 0 24 24" aria-label="potato">
+      <g class="s" fill="none">
+        <path fill="#C99B66" d="M8 8.5c1.9-3.1 6.3-4.7 9.3-2.7 3 2 3.5 7-1.4 11.4-4.9 4.4-10 2.7-11.6-.3C2.7 13.8 6 11.8 8 8.5z"/>
+        <circle cx="10" cy="12" r="0.8" fill="#B78B5B" stroke="none"/>
+        <circle cx="13" cy="10.5" r="0.7" fill="#B78B5B" stroke="none"/>
+        <circle cx="15" cy="14" r="0.7" fill="#B78B5B" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Corn -->
+    <symbol id="i-corn" viewBox="0 0 24 24" aria-label="corn">
+      <g class="s" fill="none">
+        <ellipse cx="12" cy="11.5" rx="5" ry="7.5" fill="#F5C84C"/>
+        <path fill="#5FBF6A" d="M7 14.5c-2 1-3 3.1-3 5.3 2-1 4-1 6.2.1M17 14.5c2 1 3 3.1 3 5.3-2-1-4-1-6.2.1"/>
+        <path d="M12 6.5v10M10 8.5h4M10 11h4M10 13.5h4" />
+      </g>
+    </symbol>
+
+    <!-- Avocado -->
+    <symbol id="i-avocado" viewBox="0 0 24 24" aria-label="avocado">
+      <g class="s" fill="none">
+        <path fill="#7BC96F" d="M9.2 4.2c2-1 4.2-1 5.7 1 2.3 3.6 5.8 8.7 1.6 12.9S5.3 19.7 5.3 15.1c0-4 2-8.2 3.9-10.9z"/>
+        <circle cx="12.7" cy="13.1" r="3.2" fill="#8C5A3C" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- ========== FRUITS ========== -->
+
+    <!-- Banana -->
+    <symbol id="i-banana" viewBox="0 0 24 24" aria-label="banana">
+      <g class="s" fill="none">
+        <path fill="#F5D94C" d="M4 8c1 4.5 5.5 9 12 9 1.7 0 3.2-.3 4-.8-1 2.2-4.5 3.8-8.4 3.8C6.9 20 4 14.5 4 8z"/>
+        <path fill="#7A5E2E" d="M4 8.2c.5-.5 1.2-.9 1.8-1-1-.8-1.3-1.6-1.8-2.5V8.2z"/>
+      </g>
+    </symbol>
+
+    <!-- Apple -->
+    <symbol id="i-apple" viewBox="0 0 24 24" aria-label="apple">
+      <g class="s" fill="none">
+        <path fill="#E63B3B" d="M12 6.5c3.8-2.1 8 1 8 5.5S17.5 20 12 20 4 16.6 4 12s4.2-7.6 8-5.5z"/>
+        <path fill="#5FBF6A" d="M12 6.5c-.5-1.5.2-3 1.5-3.7 1.3-.7 2.9-.4 3.9.7-1.6 0-3 1-4 3z"/>
+        <path d="M12 6.5c-.8 0-1.6.2-2.4.5" />
+      </g>
+    </symbol>
+
+    <!-- Orange -->
+    <symbol id="i-orange" viewBox="0 0 24 24" aria-label="orange">
+      <g class="s" fill="none">
+        <circle cx="12" cy="13" r="7" fill="#FFA344"/>
+        <path fill="#74C475" d="M12 5c1.6 0 3 .9 3.6 2.3-1.2.1-2.5-.2-3.6-.9-1.1.7-2.4 1-3.6.9C9 5.9 10.4 5 12 5z"/>
+      </g>
+    </symbol>
+
+    <!-- Lemon -->
+    <symbol id="i-lemon" viewBox="0 0 24 24" aria-label="lemon">
+      <g class="s" fill="none">
+        <ellipse cx="13" cy="12.5" rx="6.5" ry="4.5" fill="#F7E352"/>
+        <path fill="#E6D840" d="M5 12.5c0-1.5 1-3 2.5-4-1 1.2-1 6.8 0 8-1.5-1-2.5-2.5-2.5-4z"/>
+      </g>
+    </symbol>
+
+    <!-- Strawberry -->
+    <symbol id="i-strawberry" viewBox="0 0 24 24" aria-label="strawberry">
+      <g class="s" fill="none">
+        <path fill="#E6465D" d="M12 7c4 0 6.5 2.2 6.5 5.2 0 4-4.5 7.8-6.5 7.8S5.5 16.2 5.5 12.2C5.5 9.2 8 7 12 7z"/>
+        <path fill="#5FBF6A" d="M12 5c1.2-1.2 2.7-2 4.2-2-1 1.4-2.2 2.5-3.7 3.3-1.5-.8-2.7-1.9-3.7-3.3 1.5 0 3 .8 4.2 2z"/>
+        <circle cx="10" cy="12" r="0.7" fill="#FFD1D8" stroke="none"/>
+        <circle cx="12.5" cy="14" r="0.7" fill="#FFD1D8" stroke="none"/>
+        <circle cx="14.8" cy="11.5" r="0.7" fill="#FFD1D8" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Blueberries -->
+    <symbol id="i-blueberries" viewBox="0 0 24 24" aria-label="blueberries">
+      <g class="s" fill="none">
+        <circle cx="9" cy="13" r="3.2" fill="#5972D9" stroke="#3342A6" stroke-width="1"/>
+        <circle cx="14.8" cy="11.2" r="3.2" fill="#6B84EB" stroke="#3342A6" stroke-width="1"/>
+        <path d="M8.2 13h1.6M14 11.2h1.6" stroke="#3342A6" stroke-width="1" />
+      </g>
+    </symbol>
+
+    <!-- Grapes -->
+    <symbol id="i-grapes" viewBox="0 0 24 24" aria-label="grapes">
+      <g class="s" fill="none">
+        <circle cx="12" cy="8" r="2.3" fill="#8E5AD7" stroke="#6B3FB5" stroke-width="1"/>
+        <circle cx="9" cy="10.6" r="2.3" fill="#8E5AD7" stroke="#6B3FB5" stroke-width="1"/>
+        <circle cx="15" cy="10.6" r="2.3" fill="#8E5AD7" stroke="#6B3FB5" stroke-width="1"/>
+        <circle cx="12" cy="13.2" r="2.3" fill="#8E5AD7" stroke="#6B3FB5" stroke-width="1"/>
+        <circle cx="9" cy="15.8" r="2.3" fill="#8E5AD7" stroke="#6B3FB5" stroke-width="1"/>
+        <circle cx="15" cy="15.8" r="2.3" fill="#8E5AD7" stroke="#6B3FB5" stroke-width="1"/>
+        <path d="M12 6c1.2-1.2 2.6-2 4.2-2" />
+      </g>
+    </symbol>
+
+    <!-- Watermelon slice -->
+    <symbol id="i-watermelon" viewBox="0 0 24 24" aria-label="watermelon">
+      <g class="s" fill="none">
+        <path fill="#34C759" d="M3 17c0-5 4-9 9-9s9 4 9 9H3z"/>
+        <path fill="#FF4F58" d="M5.4 17c0-3.7 2.9-6.6 6.6-6.6S18.6 13.3 18.6 17H5.4z"/>
+        <circle cx="10" cy="15" r="0.6" fill="#1a1a1a" stroke="none"/>
+        <circle cx="12" cy="13.8" r="0.6" fill="#1a1a1a" stroke="none"/>
+        <circle cx="14" cy="15.1" r="0.6" fill="#1a1a1a" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Pineapple -->
+    <symbol id="i-pineapple" viewBox="0 0 24 24" aria-label="pineapple">
+      <g class="s" fill="none">
+        <path fill="#5FBF6A" d="M12 4c1.6-1.6 3.7-2 5.4-1-1 1.8-2.6 3-4.4 3.6 1.9 0 3.7.5 4.9 1.8-2.3 0-4.2-.6-5.9-1.9-1.7 1.3-3.6 1.9-5.9 1.9C7.3 6.6 9.1 6 11 6.6 9.2 6 7.6 4.8 6.6 3 8.3 2 10.4 2.4 12 4z"/>
+        <rect x="7.5" y="8" width="9" height="11" rx="4.5" fill="#F5C84C"/>
+        <path d="M9 10l6 6M9 16l6-6" />
+      </g>
+    </symbol>
+
+    <!-- Pear -->
+    <symbol id="i-pear" viewBox="0 0 24 24" aria-label="pear">
+      <g class="s" fill="none">
+        <path fill="#B5E36A" d="M12 7c2 0 3.5-1.6 3.5-3.2C14.2 3.6 12.9 4 12 4c-.9 0-2.2-.4-3.5-.2C8.5 5.4 10 7 12 7z"/>
+        <path fill="#A4D65E" d="M7 16a5 5 0 0110 0c0 3-2.2 5-5 5s-5-2-5-5z"/>
+      </g>
+    </symbol>
+
+    <!-- Peach -->
+    <symbol id="i-peach" viewBox="0 0 24 24" aria-label="peach">
+      <g class="s" fill="none">
+        <path fill="#FF9A73" d="M12 9c3.3-3.8 8-2.5 9.2.9 1.2 3.5-1 8.1-6.2 8.1-3.5 0-3.6-2.3-3-9z"/>
+        <path fill="#FFB38F" d="M12 9C8.7 5.2 4 6.5 2.8 9.9 1.6 13.4 3.8 18 9 18c3.5 0 3.6-2.3 3-9z"/>
+        <path fill="#6BCB77" d="M12 8c1.4-1.4 3.4-2.2 5.3-2-1 1.6-2.6 2.8-4.7 3.2-.8-.6-1.1-1-1.6-1.2z"/>
+      </g>
+    </symbol>
+
+        <!-- Coffee -->
+    <symbol id="i-coffee" viewBox="0 0 24 24" aria-label="coffee">
+      <g class="s" fill="none">
+        <rect x="5" y="8" width="14" height="10" rx="2" fill="#6B4E3D"/>
+        <path fill="#D9C3B0" d="M5 8h14v2H5z"/>
+        <path d="M3 12c0 3 2 6 5 6h8c3 0 5-3 5-6" />
+      </g>
+    </symbol>
+
+    <!-- Peanut Butter -->
+    <symbol id="i-peanut-butter" viewBox="0 0 24 24" aria-label="peanut butter">
+      <g class="s" fill="none">
+        <rect x="7" y="5" width="10" height="14" rx="2" fill="#C68642"/>
+        <rect x="7" y="5" width="10" height="4" fill="#D95F02"/>
+        <path d="M7 9h10" />
+      </g>
+    </symbol>
+
+    <!-- Milk -->
+    <symbol id="i-milk" viewBox="0 0 24 24" aria-label="milk">
+      <g class="s" fill="none">
+        <rect x="8" y="4" width="8" height="16" rx="2" fill="#FFFFFF"/>
+        <path fill="#B3E5FC" d="M8 10h8v6H8z"/>
+        <path d="M8 8h8" />
+      </g>
+    </symbol>
+
+    <!-- Eggs -->
+    <symbol id="i-eggs" viewBox="0 0 24 24" aria-label="eggs">
+      <g class="s" fill="none">
+        <ellipse cx="9" cy="13" rx="4" ry="5.5" fill="#FFF3E0"/>
+        <ellipse cx="15" cy="11" rx="4" ry="5.5" fill="#FFF3E0"/>
+      </g>
+    </symbol>
+
+    <!-- Cheese -->
+    <symbol id="i-cheese" viewBox="0 0 24 24" aria-label="cheese">
+      <g class="s" fill="none">
+        <path fill="#FFD54F" d="M3 15l9-7 9 7v4H3z"/>
+        <circle cx="10" cy="15" r="1" fill="#FBC02D" stroke="none"/>
+        <circle cx="14" cy="13" r="1" fill="#FBC02D" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Yogurt -->
+    <symbol id="i-yogurt" viewBox="0 0 24 24" aria-label="yogurt">
+      <g class="s" fill="none">
+        <rect x="6" y="6" width="12" height="12" rx="3" fill="#FFFFFF"/>
+        <rect x="6" y="6" width="12" height="3" fill="#B3E5FC"/>
+      </g>
+    </symbol>
+
+    <!-- Tuna Can -->
+    <symbol id="i-tuna" viewBox="0 0 24 24" aria-label="tuna can">
+      <g class="s" fill="none">
+        <ellipse cx="12" cy="8" rx="8" ry="3" fill="#90CAF9"/>
+        <rect x="4" y="8" width="16" height="8" fill="#64B5F6"/>
+        <ellipse cx="12" cy="16" rx="8" ry="3" fill="#90CAF9"/>
+      </g>
+    </symbol>
+
+    <!-- Salmon Fillet -->
+    <symbol id="i-salmon" viewBox="0 0 24 24" aria-label="salmon">
+      <g class="s" fill="none">
+        <path fill="#FF8A65" d="M4 12c0-4 4-8 8-8s8 4 8 8-4 8-8 8-8-4-8-8z"/>
+        <path d="M4 12h16M8 8c2 2 6 2 8 0M8 16c2-2 6-2 8 0" />
+      </g>
+    </symbol>
+
+    <!-- Bread -->
+    <symbol id="i-bread" viewBox="0 0 24 24" aria-label="bread">
+      <g class="s" fill="none">
+        <rect x="6" y="6" width="12" height="12" rx="3" fill="#FBC02D"/>
+        <path d="M6 10h12" />
+      </g>
+    </symbol>
+
+    <!-- Crackers -->
+    <symbol id="i-crackers" viewBox="0 0 24 24" aria-label="crackers">
+      <g class="s" fill="none">
+        <rect x="5" y="5" width="14" height="14" rx="2" fill="#FFE082"/>
+        <circle cx="9" cy="9" r="0.7" fill="#F9A825" stroke="none"/>
+        <circle cx="15" cy="9" r="0.7" fill="#F9A825" stroke="none"/>
+        <circle cx="9" cy="15" r="0.7" fill="#F9A825" stroke="none"/>
+        <circle cx="15" cy="15" r="0.7" fill="#F9A825" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Pasta Sauce -->
+    <symbol id="i-pasta-sauce" viewBox="0 0 24 24" aria-label="pasta sauce">
+      <g class="s" fill="none">
+        <rect x="7" y="4" width="10" height="16" rx="2" fill="#E57373"/>
+        <rect x="7" y="4" width="10" height="4" fill="#81C784"/>
+      </g>
+    </symbol>
+
+    <!-- Chips -->
+    <symbol id="i-chips" viewBox="0 0 24 24" aria-label="chips">
+      <g class="s" fill="none">
+        <path fill="#FFEB3B" d="M8 5h8l2 14H6L8 5z"/>
+        <path fill="#FBC02D" d="M8 5l1 4h6l1-4H8z"/>
+      </g>
+    </symbol>
+
+    <!-- ================= PANTRY / DAIRY / MEAT (NEW) ================= -->
+
+    <!-- Chicken (tray of breasts) -->
+    <symbol id="i-chicken" viewBox="0 0 24 24" aria-label="chicken">
+      <g class="s" fill="none">
+        <rect x="3" y="5" width="18" height="14" rx="2" fill="#C8E6C9"/>
+        <ellipse cx="9" cy="12" rx="4.2" ry="2.9" fill="#F8C9B7" stroke="none"/>
+        <ellipse cx="15" cy="12" rx="4.2" ry="2.9" fill="#F6BDAA" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Beef (steak) -->
+    <symbol id="i-beef" viewBox="0 0 24 24" aria-label="beef">
+      <g class="s" fill="none">
+        <path fill="#C84D4D" d="M5 10c0-2 2.8-4 7-4s7 2 7 4-1.6 6-7 8c-5.4-2-7-6-7-8z"/>
+        <path d="M8 10c1.2.6 3 .6 4.5 0" />
+        <circle cx="15.5" cy="10.5" r="1.4" fill="#E07C7C" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Hummus (tub) -->
+    <symbol id="i-hummus" viewBox="0 0 24 24" aria-label="hummus">
+      <g class="s" fill="none">
+        <ellipse cx="12" cy="9" rx="8" ry="3" fill="#FCE0B2"/>
+        <rect x="4" y="9" width="16" height="7" rx="2" fill="#F5C87A"/>
+        <ellipse cx="12" cy="16" rx="8" ry="3" fill="#E6B96B"/>
+      </g>
+    </symbol>
+
+    <!-- Rice (bag) -->
+    <symbol id="i-rice" viewBox="0 0 24 24" aria-label="rice">
+      <g class="s" fill="none">
+        <rect x="6" y="4" width="12" height="16" rx="2" fill="#E8F5E9"/>
+        <rect x="6" y="4" width="12" height="4" fill="#81C784"/>
+        <path d="M9 12l1 1M12 13l1 1M15 12l1 1" />
+      </g>
+    </symbol>
+
+    <!-- Pasta (box) -->
+    <symbol id="i-pasta" viewBox="0 0 24 24" aria-label="pasta">
+      <g class="s" fill="none">
+        <rect x="6" y="5" width="12" height="14" rx="2" fill="#90CAF9"/>
+        <rect x="8" y="9" width="8" height="6" fill="#FFE082"/>
+        <path d="M8 9h8M8 15h8" />
+      </g>
+    </symbol>
+
+    <!-- Honey (squeeze bottle) -->
+    <symbol id="i-honey" viewBox="0 0 24 24" aria-label="honey">
+      <g class="s" fill="none">
+        <rect x="8" y="5" width="8" height="14" rx="3" fill="#FFC107"/>
+        <rect x="9.5" y="3" width="5" height="3" rx="1" fill="#FBC02D"/>
+        <path d="M10 9h4M10 13h4M10 16h4" />
+      </g>
+    </symbol>
+
+    <!-- Bagel -->
+    <symbol id="i-bagel" viewBox="0 0 24 24" aria-label="bagel">
+      <g class="s" fill="none">
+        <circle cx="12" cy="12" r="7" fill="#F4C27A"/>
+        <circle cx="12" cy="12" r="2.2" fill="#F8E7C3" stroke="none"/>
+        <circle cx="9.5" cy="10" r="0.4" fill="#D39B54" stroke="none"/>
+        <circle cx="14.2" cy="13" r="0.4" fill="#D39B54" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Wrap / Tortilla -->
+    <symbol id="i-wrap" viewBox="0 0 24 24" aria-label="wrap">
+      <g class="s" fill="none">
+        <circle cx="12" cy="12" r="7.5" fill="#F5E0B8"/>
+        <path d="M6 12h12" />
+      </g>
+    </symbol>
+
+    <!-- Oats (cylinder canister) -->
+    <symbol id="i-oats" viewBox="0 0 24 24" aria-label="oats">
+      <g class="s" fill="none">
+        <rect x="7" y="4" width="10" height="16" rx="2" fill="#D7CCC8"/>
+        <rect x="7" y="4" width="10" height="3" fill="#8D6E63"/>
+        <path d="M10 12l1 1M13 12l1 1M11.5 14.5l1 1" />
+      </g>
+    </symbol>
+
+    <!-- Butter (stick in wrapper) -->
+    <symbol id="i-butter" viewBox="0 0 24 24" aria-label="butter">
+      <g class="s" fill="none">
+        <rect x="5" y="10" width="14" height="6" rx="1.5" fill="#FFEB3B"/>
+        <rect x="4" y="9" width="16" height="8" rx="2" fill="#FFF9C4"/>
+      </g>
+    </symbol>
+
+    <!-- Ice Cream (tub) -->
+    <symbol id="i-ice_cream" viewBox="0 0 24 24" aria-label="ice cream">
+      <g class="s" fill="none">
+        <rect x="6" y="10" width="12" height="8" rx="2" fill="#B39DDB"/>
+        <path fill="#F8BBD0" d="M6 10h12c-1-2.2-3.5-3.8-6-3.8S7 7.8 6 10z"/>
+      </g>
+    </symbol>
+
+    <!-- Cereal (box) -->
+    <symbol id="i-cereal" viewBox="0 0 24 24" aria-label="cereal">
+      <g class="s" fill="none">
+        <rect x="6" y="4" width="12" height="16" rx="2" fill="#FFCC80"/>
+        <circle cx="12" cy="12" r="3" fill="#FFE082" stroke="none"/>
+        <circle cx="11" cy="11.5" r="0.5" fill="#F57F17" stroke="none"/>
+        <circle cx="12.8" cy="13" r="0.5" fill="#F57F17" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Coffee (bag) — if you already have i-coffee as a cup, keep that or replace it. -->
+    <symbol id="i-coffee" viewBox="0 0 24 24" aria-label="coffee">
+      <g class="s" fill="none">
+        <path fill="#8D6E63" d="M7 5h10l-1.5 14H8.5L7 5z"/>
+        <rect x="8.5" y="8" width="7" height="6" rx="1" fill="#D7CCC8"/>
+        <circle cx="12" cy="11" r="1.6" fill="#6D4C41" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Peanut Butter (jar) with underscore id to match JSON -->
+    <symbol id="i-peanut_butter" viewBox="0 0 24 24" aria-label="peanut butter">
+      <g class="s" fill="none">
+        <rect x="7" y="6" width="10" height="13" rx="2" fill="#C68642"/>
+        <rect x="7" y="6" width="10" height="3" fill="#D95F02"/>
+        <circle cx="12" cy="13" r="2.2" fill="#E0A46A" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Cracker (single square) — singular id to match JSON -->
+    <symbol id="i-cracker" viewBox="0 0 24 24" aria-label="cracker">
+      <g class="s" fill="none">
+        <rect x="5" y="5" width="14" height="14" rx="2" fill="#FFE082"/>
+        <circle cx="9"  cy="9"  r="0.7" fill="#F9A825" stroke="none"/>
+        <circle cx="15" cy="9"  r="0.7" fill="#F9A825" stroke="none"/>
+        <circle cx="9"  cy="15" r="0.7" fill="#F9A825" stroke="none"/>
+        <circle cx="15" cy="15" r="0.7" fill="#F9A825" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Pasta Sauce (jar) — underscore id to match JSON -->
+    <symbol id="i-pasta_sauce" viewBox="0 0 24 24" aria-label="pasta sauce">
+      <g class="s" fill="none">
+        <rect x="7" y="4" width="10" height="16" rx="2" fill="#E57373"/>
+        <rect x="7" y="4" width="10" height="4" fill="#81C784"/>
+        <circle cx="12" cy="13" r="2" fill="#F0625D" stroke="none"/>
+      </g>
+    </symbol>
+
+    <!-- Egg (alias to plural if that exists in your file) -->
+    <symbol id="i-egg" viewBox="0 0 24 24" aria-label="egg">
+      <use href="#i-eggs"></use>
+    </symbol>
+
+    <!-- Cracker alias to plural version (if you already have i-crackers) -->
+    <symbol id="i-cracker_compat" viewBox="0 0 24 24" aria-label="cracker">
+      <use href="#i-crackers"></use>
+    </symbol>
+
+    <!-- Peanut butter alias to dash version (if present) -->
+    <symbol id="i-peanut_butter_compat" viewBox="0 0 24 24" aria-label="peanut butter">
+      <use href="#i-peanut-butter"></use>
+    </symbol>
+
+    <!-- Pasta sauce alias to dash version (if present) -->
+    <symbol id="i-pasta_sauce_compat" viewBox="0 0 24 24" aria-label="pasta sauce">
+      <use href="#i-pasta-sauce"></use>
+    </symbol>
+
+<symbol id="i-toilet_paper" viewBox="0 0 24 24">
+  <circle cx="7" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="2"/>
+  <path d="M3 3h14a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H3z" fill="none" stroke="currentColor" stroke-width="2"/>
+  <path d="M17 3v18" stroke="currentColor" stroke-width="2"/>
+</symbol>
+
+  </defs>
+</svg>
