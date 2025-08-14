@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SVG Icon Preview</title>
+<style>
+  body {
+    font-family: sans-serif;
+    margin: 20px;
+    background: #fafafa;
+    color: #333;
+  }
+  h1 {
+    font-size: 1.4rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 20px;
+  }
+  .icon-card {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+  .icon-card svg {
+    width: 48px;
+    height: 48px;
+  }
+  .label {
+    font-size: 0.75rem;
+    margin-top: 6px;
+    word-break: break-all;
+  }
+</style>
+</head>
+<body>
+
+<h1>SVG Icon Preview</h1>
+<div class="grid" id="iconGrid"></div>
+
+<script>
+fetch('grocery-icons.svg')
+  .then(response => {
+    if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+    return response.text();
+  })
+  .then(svgText => {
+    // Insert the SVG into the DOM (hidden)
+    const div = document.createElement('div');
+    div.style.display = 'none';
+    div.innerHTML = svgText;
+    document.body.appendChild(div);
+
+    // Find all <symbol> elements
+    const symbols = div.querySelectorAll('symbol');
+    const grid = document.getElementById('iconGrid');
+
+    symbols.forEach(sym => {
+      const id = sym.id;
+      const card = document.createElement('div');
+      card.className = 'icon-card';
+      card.innerHTML = `
+        <svg><use href="#${id}"></use></svg>
+        <div class="label">${id}</div>
+      `;
+      grid.appendChild(card);
+    });
+  })
+  .catch(err => {
+    document.body.innerHTML += `<p style="color:red">Error loading SVG: ${err}</p>`;
+  });
+</script>
+
+</body>
+</html>
