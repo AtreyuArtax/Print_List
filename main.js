@@ -360,7 +360,7 @@ async function renderQuadrants(model){
   if(model.sections.length===0){
     const p=document.createElement('div');
     p.className='empty-note';
-    p.textContent='All items are checked. Nothing left to buy 🎉';
+    p.textContent='All items are checked. Nothing left to buy �';
     out.appendChild(p);
     return;
   }
@@ -476,8 +476,24 @@ async function generatePDF(){
 
   doc.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', x, y, w, h);
 
-  // Use doc.output to open in a new window instead of saving
-  doc.output('dataurlnewwindow');
+  // Check for iOS (Safari, Chrome, Firefox) and use the download method
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isDesktopSafari = /^((?!CriOS).)*Safari/.test(navigator.userAgent);
+  if (isIOS) {
+    // For iOS, use a blob download since doc.output('dataurlnewwindow') is blocked
+    const pdfBlob = doc.output('blob');
+    const blobUrl = URL.createObjectURL(pdfBlob);
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = 'grocery_list.pdf';
+    document.body.appendChild(link);
+    link.click();
+    URL.revokeObjectURL(blobUrl);
+    link.remove();
+  } else {
+    // For all other browsers, open in a new tab which is a better user experience
+    doc.output('dataurlnewwindow');
+  }
 }
 
 /* =========================
