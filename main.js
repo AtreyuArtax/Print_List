@@ -59,10 +59,22 @@ async function loadIconMap() {
 
 function normalize(s) {
   return (s || '')
+    // 1) Remove bracketed annotations entirely (non-greedy, supports multiples)
+    //    e.g., "peppers (check date) (sale)" -> "peppers  "
+    .replace(/\([^()]*\)/g, '')         // remove (...) blocks (non-nested)
+    // If you also want to drop square/curly-brace notes, uncomment these:
+    // .replace(/\[[^[\]]*\]/g, '')     // remove [...] blocks
+    // .replace(/\{[^{}]*\}/g, '')      // remove {...} blocks
+
+    // 2) Lowercase and strip accents
     .toLowerCase()
-    .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')   // strip accents
-    .replace(/[_/\\]/g, ' ')                           // unify separators
-    .replace(/[^\w\s-]/g, ' ')                           // drop punctuation
+    .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+
+    // 3) Unify separators and drop punctuation
+    .replace(/[_/\\]/g, ' ')           // underscores/slashes → space
+    .replace(/[^\w\s-]/g, ' ')           // drop other punctuation
+
+    // 4) Collapse whitespace
     .replace(/\s+/g, ' ')
     .trim();
 }
