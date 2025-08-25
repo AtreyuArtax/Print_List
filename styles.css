@@ -65,6 +65,22 @@ li.item{display:flex;align-items:center;gap:.55rem;font-size:var(--item-size)}
 }
 .item-label .icon img{width:100%;height:100%;display:block}
 
+/* This is the new rule for the icon-wrap container */
+.item-label .icon-wrap {
+  display: inline-flex;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  margin-right: calc(var(--item-size) * 0.5); /* Add spacing */
+  vertical-align: middle;
+}
+
+/* This new rule ensures the image inside scales to fit */
+.item-label .icon-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 /* Quadrants container (screen layout only) */
 .grid4{
   display:grid;

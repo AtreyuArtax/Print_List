@@ -1,81 +1,100 @@
 {
-  "canonical": [
-    "banana","broccoli","tomato","cucumber","pepper","mushroom","onion","lettuce","potato","corn","avocado",
-    "apple","orange","lemon","strawberry","blueberries","grapes","watermelon","pineapple","pear","peach","carrot",
-    "milk","yogurt","cheese","egg","chicken","beef","salmon","tuna","coffee","peanut_butter","cracker","bread","hummus","rice","pasta","honey",
-    "chips","pasta_sauce","bagel","wrap","oats","butter","ice_cream","cereal","toilet_paper"
-  ],
   "synonyms": {
-    "bananas":"banana",
+    "romaine": "lettuce",
+    "spring mix": "lettuce",
+    "butter lettuce": "lettuce",
+    "corn on the cob": "corn",
 
-    "broccolini":"broccoli",
+    "granny smith": "apple",
+    "gala": "apple",
+    "honeycrisp": "apple",
+    "mandarin": "orange",
+    "clementine": "orange",
 
-    "tomatoes":"tomato","roma":"tomato","cherry tomato":"tomato","grape tomato":"tomato",
-    "roma tomatoes":"tomato","cherry tomatoes":"tomato","grape tomatoes":"tomato",
+    "yoghurt": "yogurt",
+    "yogourt": "yogurt",
+    "greek yogurt": "yogurt",
+    "greek yogourt": "yogurt",
+    "greek yoghurt": "yogurt",
 
-    "cucumbers":"cucumber","english cucumber":"cucumber","mini cucumber":"cucumber",
-    "english cucumbers":"cucumber","mini cucumbers":"cucumber",
+    "cheddar": "cheese",
+    "havarti": "cheese",
+    "feta": "cheese",
+    "goat cheese": "cheese",
 
-    "peppers":"pepper","bell pepper":"pepper","green pepper":"pepper","red pepper":"pepper",
+    "egg carton": "egg",
 
-    "mushrooms":"mushroom","cremini":"mushroom","portobello":"mushroom","shiitake":"mushroom",
+    "chicken breast": "chicken",
+    "chicken thighs": "chicken",
+    "whole chicken": "chicken",
+    "chicken strip": "chicken",
+    "chicken strips": "chicken",
+    "chicken tenders": "chicken",
 
-    "onions":"onion","red onion":"onion","yellow onion":"onion","white onion":"onion",
+    "ground beef": "beef",
+    "steak": "beef",
 
-    "romaine":"lettuce","spring mix":"lettuce","butter lettuce":"lettuce",
+    "smoked salmon": "salmon",
 
-    "potatoes":"potato","russet":"potato","yukon":"potato",
+    "canned tuna": "tuna",
+    "solid white tuna": "tuna",
+    "chunk light tuna": "tuna",
+    "albacore tuna": "tuna",
 
-    "corn on the cob":"corn",
+    "coffee beans": "coffee",
+    "instant coffee": "coffee",
+    "ground coffee": "coffee",
 
-    "avocados":"avocado",
+    "peanut butter": "peanut_butter",
+    "natural peanut butter": "peanut_butter",
 
-    "apples":"apple","granny smith":"apple","gala":"apple","honeycrisp":"apple",
-    "oranges":"orange","mandarin":"orange","clementine":"orange",
-    "lemons":"lemon",
-    "strawberries":"strawberry",
-    "blueberry":"blueberries",
-    "grape":"grapes",
+    "rice crackers": "cracker",
 
-    "watermelons":"watermelon",
-    "pineapples":"pineapple",
-    "pears":"pear",
-    "peaches":"peach",
+    "loaf": "bread",
+    "buns": "bread",
+    "naan": "bread",
 
-    "carrots":"carrot",
+    "hummous": "hummus",
 
-    "milks":"milk","whole milk":"milk","2% milk":"milk","skim milk":"milk","homo milk":"milk",
-    "yoghurt":"yogurt","greek yogurt":"yogurt","yogurt drink":"yogurt","yogourt":"yogurt",
-    "greek yogourt":"yogurt","greek yoghurt":"yogurt",
-    "cheddar":"cheese","havarti":"cheese","feta":"cheese","goat cheese":"cheese",
-    "eggs":"egg","egg carton":"egg",
+    "basmati rice": "rice",
+    "jasmine rice": "rice",
 
-    "chicken breast":"chicken","chicken thighs":"chicken","whole chicken":"chicken","chicken strip":"chicken",
-    "chicken strips":"chicken","chicken tenders":"chicken",
-    "ground beef":"beef","steak":"beef",
-    "smoked salmon":"salmon",
-    "canned tuna":"tuna","solid white tuna":"tuna","chunk light tuna":"tuna","albacore tuna":"tuna",
+    "spaghetti": "pasta",
+    "penne": "pasta",
+    "macaroni": "pasta",
 
-    "coffee beans":"coffee","instant coffee":"coffee","ground coffee":"coffee",
-    "peanut butter":"peanut_butter","natural peanut butter":"peanut_butter",
-    "crackers":"cracker","rice crackers":"cracker",
-    "loaf":"bread","bread":"bread","buns":"bread","naan":"bread",
-    "hummous":"hummus",
+    "manuka honey": "honey",
 
-    "basmati rice":"rice","jasmine rice":"rice",
-    "spaghetti":"pasta","penne":"pasta","macaroni":"pasta",
-    "manuka honey":"honey",
+    "potato chips": "chips",
+    "tortilla chips": "chips",
+    "snack chips": "chips",
 
-    "potato chips":"chips","tortilla chips":"chips","snack chips":"chips",
-    "marinara sauce":"pasta_sauce","tomato sauce":"pasta_sauce","spaghetti sauce":"pasta_sauce",
-    "bagels":"bagel","plain bagel":"bagel","sesame bagel":"bagel",
-    "tortilla":"wrap","tortillas":"wrap","wraps":"wrap",
-    "rolled oats":"oats","steel cut oats":"oats","quick oats":"oats",
-    "salted butter":"butter","unsalted butter":"butter",
-    "gelato":"ice_cream","frozen yogurt":"ice_cream",
-    "corn flakes":"cereal","granola cereal":"cereal","oat cereal":"cereal",
+    "marinara sauce": "pasta_sauce",
+    "tomato sauce": "pasta_sauce",
+    "spaghetti sauce": "pasta_sauce",
 
-    "toilet paper": "toilet_paper","bathroom tissue": "toilet_paper","tp": "toilet_paper",
-    "toilet rolls": "toilet_paper","toilet roll": "toilet_paper"
+    "tortilla": "wrap",
+    "tortillas": "wrap",
+    "wraps": "wrap",
+
+    "rolled oats": "oats",
+    "steel cut oats": "oats",
+    "quick oats": "oats",
+
+    "salted butter": "butter",
+    "unsalted butter": "butter",
+
+    "gelato": "ice_cream",
+    "frozen yogurt": "ice_cream",
+
+    "corn flakes": "cereal",
+    "granola cereal": "cereal",
+    "oat cereal": "cereal",
+
+    "toilet paper": "toilet_paper",
+    "bathroom tissue": "toilet_paper",
+    "tp": "toilet_paper",
+    "toilet rolls": "toilet_paper",
+    "toilet roll": "toilet_paper"
   }
 }

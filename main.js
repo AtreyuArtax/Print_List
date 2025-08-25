@@ -12,13 +12,172 @@ const ICON_EXT  = 'png';      // png/webp/jpg etc.
 let ICON_KEYS = new Set(); // canonical keys ("banana","tomato",...)
 let SYNONYMS  = {};        // "ripe banana" -> "banana, "bell pepper" -> "pepper", etc.
 
+// The old function is replaced by the new one below
+// async function loadIconMap() {
+//   const res = await fetch('./icon-map.json?v=' + Date.now(), { cache: 'no-store' });
+//   if (!res.ok) throw new Error(`icon-map.json fetch failed: ${res.status} ${res.statusText}`);
+//   const data = await res.json();
+//   ICON_KEYS = new Set(data.canonical || []);
+//   SYNONYMS  = data.synonyms  || {};
+//   console.log('[icon-map] loaded:', ICON_KEYS.size, 'keys,', Object.keys(SYNONYMS).length, 'synonyms');
+// }
+
+/* =========================
+   Icon Matching (Drop-in)
+   - No canonical whitelist required
+   - Optional synonyms via icon-map.json
+   - Handles case, plurals, and common modifiers
+========================= */
+
+// If you already define these, keep your originals and remove these lines.
+// const ICON_BASE = 'assets';    // folder that holds your PNGs
+// const ICON_EXT  = 'png';       // png/webp/jpg etc.
+
+// let SYNONYMS = {};           // e.g., { "pb": "peanut_butter", "bell pepper": "pepper" }
+
+/**
+ * Load synonyms from icon-map.json if present.
+ * - canonical list is IGNORED by design (no whitelist).
+ * - Missing file or bad JSON -> gracefully falls back to {}.
+ */
 async function loadIconMap() {
-  const res = await fetch('./icon-map.json?v=' + Date.now(), { cache: 'no-store' });
-  if (!res.ok) throw new Error(`icon-map.json fetch failed: ${res.status} ${res.statusText}`);
-  const data = await res.json();
-  ICON_KEYS = new Set(data.canonical || []);
-  SYNONYMS  = data.synonyms  || {};
-  console.log('[icon-map] loaded:', ICON_KEYS.size, 'keys,', Object.keys(SYNONYMS).length, 'synonyms');
+  try {
+    const res = await fetch('./icon-map.json?v=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) throw new Error(`icon-map.json fetch failed: ${res.status} ${res.statusText}`);
+    const data = await res.json();
+    SYNONYMS = data?.synonyms || {};
+    console.log('[icon-map] synonyms loaded:', Object.keys(SYNONYMS).length);
+  } catch (err) {
+    console.warn('[icon-map] no synonyms loaded (optional):', err?.message || err);
+    SYNONYMS = {};
+  }
+}
+
+/* =========================
+   Normalization helpers
+========================= */
+
+function normalize(s) {
+  return (s || '')
+    .toLowerCase()
+    .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')   // strip accents
+    .replace(/[_/\\]/g, ' ')                           // unify separators
+    .replace(/[^\w\s-]/g, ' ')                           // drop punctuation
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Words we ignore before matching (colors, packaging, generic descriptors)
+const COMMON_MODS = new Set([
+  'green','red','yellow','orange','ripe','unripe','fresh','frozen','organic',
+  'large','small','medium','big','mini',
+  'bag','box','bottle','jar','pack','pkg','tin','can','carton','case',
+  'check','note','sale','bulk','family','value','bundle'
+]);
+
+function stripModifiers(text) {
+  const words = text.split(' ').filter(Boolean);
+  const kept = words.filter(w => !COMMON_MODS.has(w));
+  return kept.join(' ') || text; // keep original if we stripped everything
+}
+
+// Basic plural → singular handling for grocery words
+function singularizeWord(w) {
+  if (/ies$/.test(w)) return w.replace(/ies$/, 'y');         // berries -> berry
+  if (/(ches|shes|xes|zes)$/.test(w)) return w.replace(/es$/, ''); // boxes -> box, dishes -> dish
+  if (/oes$/.test(w)) return w.replace(/es$/, 'o');           // tomatoes -> tomato
+  if (/s$/.test(w) && !/(ss|us)$/.test(w)) return w.replace(/s$/, ''); // apples -> apple
+  return w;
+}
+
+function toKey(s) {
+  // Convert spaces to underscore for filenames like peanut_butter.png
+  return s.replace(/\s+/g, '_');
+}
+
+/* =========================
+   Core matching (no whitelist)
+========================= */
+
+/**
+ * Returns an icon key (string) or null.
+ * Strategy:
+ * 1) Clean + strip modifiers.
+ * 2) Try synonyms on full phrase.
+ * 3) Try direct filename from full phrase.
+ * 4) Try tail n-grams (3 → 2 → 1 words), with synonyms first, then direct.
+ * 5) Try last token, then any token (singularized).
+ * 6) Null if nothing sensible.
+ *
+ * NOTE: We DO NOT check if the file exists. <img>.onerror will handle misses.
+ */
+function pickIconKeySmart(rawText) {
+  const cleaned = normalize(stripModifiers(normalize(rawText)));
+  if (!cleaned) return null;
+
+  // Full phrase → singularize tokens
+  const words = cleaned.split(' ').filter(Boolean);
+  const singularWords = words.map(singularizeWord);
+  const fullSingular = singularWords.join(' ');
+
+  // 1) Full phrase via synonyms
+  if (SYNONYMS[cleaned]) return toKey(SYNONYMS[cleaned]);
+  if (SYNONYMS[fullSingular]) return toKey(SYNONYMS[fullSingular]);
+
+  // 2) Full phrase direct
+  if (fullSingular) return toKey(fullSingular);
+
+  // 3) Tail n-grams (3 → 2 → 1)
+  for (let n = Math.min(3, singularWords.length); n >= 1; n--) {
+    const tail = singularWords.slice(-n).join(' ');
+    if (SYNONYMS[tail]) return toKey(SYNONYMS[tail]);
+    if (tail) return toKey(tail);
+  }
+
+  // 4) Last token, then any token
+  if (singularWords.length) {
+    const last = singularWords[singularWords.length - 1];
+    if (SYNONYMS[last]) return toKey(SYNONYMS[last]);
+    if (last) return toKey(last);
+  }
+  for (const w of singularWords) {
+    if (SYNONYMS[w]) return toKey(SYNONYMS[w]);
+    if (w) return toKey(w);
+  }
+
+  return null;
+}
+
+/* =========================
+   Utilities for consumers
+========================= */
+
+function getIconUrlForText(rawText, base = ICON_BASE, ext = ICON_EXT) {
+  const key = pickIconKeySmart(rawText);
+  return key ? `${base}/${key}.${ext}` : null;
+}
+
+/**
+ * Create a <span class="icon"> with <img>, auto-removing on 404.
+ * Returns the span element or null if no key.
+ */
+function createIconEl(rawText, base = ICON_BASE, ext = ICON_EXT) {
+  const url = getIconUrlForText(rawText, base, ext);
+  if (!url) return null;
+
+  const span = document.createElement('span');
+  span.className = 'icon-wrap';
+  const img = document.createElement('img');
+  img.decoding = 'async';
+  img.loading = 'lazy';
+  img.alt = '';
+  img.src = url;
+
+  // If file doesn't exist, just remove the wrapper quietly
+  img.onerror = () => span.remove();
+
+  span.appendChild(img);
+  return span;
 }
 
 /* =========================
@@ -233,120 +392,6 @@ async function flowIntoQuadrants(sections){
 }
 
 /* =========================
-   Matching helpers
-========================= */
-function normalize(s){
-  return (s||'').toLowerCase()
-    .normalize('NFKD').replace(/[\u0300-\u036f]/g,'')   // strip accents
-    .replace(/[_/\\]/g, ' ')
-    .replace(/[^\w\s-]/g,' ')                           // keep words & hyphens
-    .replace(/\s+/g,' ').trim();
-}
-
-function singularize(w){
-  if(/(ies)$/.test(w)) return w.replace(/ies$/,'y');
-  if(/(oes)$/.test(w)) return w.replace(/es$/,'o');
-  if(/(ches|shes|xes|zes)$/.test(w)) return w.replace(/es$/,'');
-  if(/s$/.test(w) && !/(ss|us)$/.test(w)) return w.replace(/s$/,'');
-  return w;
-}
-
-// Remove bracketed/annotated bits: ( ... ), [ ... ], { ... }
-function stripBrackets(text){
-  return text
-    .replace(/\([^)]*\)/g, '')
-    .replace(/\[[^\]]*\]/g, '')
-    .replace(/\{[^}]*\}/g, '')
-    .replace(/\s{2,}/g, ' ')
-    .trim();
-}
-
-// Optional: drop common non-category adjectives (fast, safe wins)
-const COMMON_MODS = [
-  // colors/ripeness
-  'green','red','yellow','ripe','unripe','fresh','frozen','organic','large','small','medium',
-  // admin-ish
-  'check','date','note','sale','bulk','bag','box','bottle','jar','pack','pkg'
-];
-
-function stripModifiers(text){
-  let s = stripBrackets(text);
-  // remove modifiers only when they’re standalone words
-  const modRE = new RegExp(`\\b(${COMMON_MODS.join('|')})\\b`, 'gi');
-  s = s.replace(modRE, ' ');
-  return s.replace(/\s{2,}/g,' ').trim();
-}
-
-/**
- * Option A: priority to the last word (or last 2–3 words) after cleaning.
- * 1) Try full cleaned string (synonyms or direct)
- * 2) Try last 3-word phrase, then 2-word, then last word (singularized)
- * 3) Fallback to soft search across tokens
- */
-function pickIconKeySmart(text){
-  if(!text) return null;
-
-  // Clean → normalize once
-  const cleaned = normalize(stripModifiers(text));
-
-  // Direct exact hit first (synonym or canonical)
-  if (SYNONYMS[cleaned] && ICON_KEYS.has(SYNONYMS[cleaned])) return SYNONYMS[cleaned];
-  if (ICON_KEYS.has(cleaned)) return cleaned;
-
-  // Try tail n-grams (3 → 2 → 1)
-  const words = cleaned.split(' ').filter(Boolean);
-  for (let n = Math.min(3, words.length); n >= 1; n--){
-    const tail = words.slice(-n).join(' ');
-    const tailSing = tail.split(' ').map(singularize).join(' ');
-    if (SYNONYMS[tailSing] && ICON_KEYS.has(SYNONYMS[tailSing])) return SYNONYMS[tailSing];
-    if (ICON_KEYS.has(tailSing)) return tailSing;
-  }
-
-  // Try the very last token singularized (strong heuristic)
-  if (words.length){
-    const last = singularize(words[words.length - 1]);
-    if (SYNONYMS[last] && ICON_KEYS.has(SYNONYMS[last])) return SYNONYMS[last];
-    if (ICON_KEYS.has(last)) return last;
-  }
-
-  // Soft fallback: any token (singular) that matches
-  for(const w of words){
-    const s = singularize(w);
-    if (SYNONYMS[s] && ICON_KEYS.has(SYNONYMS[s])) return SYNONYMS[s];
-    if (ICON_KEYS.has(s)) return s;
-  }
-
-  return null;
-}
-
-/* =========================
-   Icons (PNG assets)
-========================= */
-function iconUrlForKey(key){
-  return `${ICON_BASE}/${key}.${ICON_EXT}`;
-}
-
-function createIconEl(key){
-  const span = document.createElement('span');
-  span.className = 'icon';
-  if (!key) return span;
-
-  const img = document.createElement('img');
-  img.alt = '';
-  img.decoding = 'sync';
-  img.loading = 'eager';
-  img.src = iconUrlForKey(key);
-
-  // If image fails (404), drop the icon completely (no broken box)
-  img.onerror = () => {
-    span.remove();
-  };
-
-  span.appendChild(img);
-  return span;
-}
-
-/* =========================
    Render (screen)
 ========================= */
 async function renderQuadrants(model){
@@ -360,7 +405,7 @@ async function renderQuadrants(model){
   if(model.sections.length===0){
     const p=document.createElement('div');
     p.className='empty-note';
-    p.textContent='All items are checked. Nothing left to buy �';
+    p.textContent='All items are checked. Nothing left to buy 🎉';
     out.appendChild(p);
     return;
   }
@@ -382,8 +427,10 @@ async function renderQuadrants(model){
         const label=document.createElement('span'); label.className='item-label';
         label.textContent=item;
 
-        const key = pickIconKeySmart(item);
-        if (key) label.appendChild(createIconEl(key));
+        const iconEl = createIconEl(item);
+        if (iconEl) {
+          label.appendChild(iconEl);
+        }
 
         li.appendChild(cb);
         li.appendChild(label);
@@ -523,7 +570,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadIconMap();
   } catch (e) {
     console.error(e);
-    alert('Could not load icon-map.json. Icons may be missing.');
+    // Use an error box instead of an alert
+    const errorBox = document.createElement('div');
+    errorBox.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24; z-index: 1000;';
+    errorBox.textContent = 'Could not load icon-map.json. Icons may be missing.';
+    document.body.appendChild(errorBox);
+    setTimeout(() => errorBox.remove(), 5000);
   }
 
   const sel = document.getElementById('opt-size');
@@ -542,7 +594,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('src').value = text;
       filterNow();
     }catch(e){
-      alert('Could not load sample.md');
+      // Use an error box instead of an alert
+      const errorBox = document.createElement('div');
+      errorBox.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24; z-index: 1000;';
+      errorBox.textContent = 'Could not load sample.md';
+      document.body.appendChild(errorBox);
+      setTimeout(() => errorBox.remove(), 5000);
     }
   });
 
@@ -550,7 +607,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btn = document.getElementById('btn-pdf');
     btn.disabled = true; const prev = btn.textContent; btn.textContent = 'Building…';
     try { await generatePDF(); }
-    catch(e){ console.error(e); alert('PDF failed — see console.'); }
+    catch(e){
+      console.error(e);
+      // Use an error box instead of an alert
+      const errorBox = document.createElement('div');
+      errorBox.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24; z-index: 1000;';
+      errorBox.textContent = 'PDF failed — see console.';
+      document.body.appendChild(errorBox);
+      setTimeout(() => errorBox.remove(), 5000);
+    }
     finally { btn.disabled = false; btn.textContent = prev; }
   });
 
