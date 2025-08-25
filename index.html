@@ -1,38 +1,42 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Print a List (Quadrant layout)</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Print a List (Quadrant layout)</title>
+<link rel="stylesheet" href="styles.css?v=1.0" />
 </head>
 <body>
-  <div class="wrap">
-    <h1>Print a List</h1>
-    <div class="hint">Paste your list (supports GitHub <code>- [ ]</code>/<code>- [x]</code> and your <code>✓</code>/<code>◦</code> style). It updates automatically below.</div>
+<div class="wrap">
+  <h1>Print a List</h1>
+  <div class="hint">Paste your list (supports GitHub <code>- [ ]</code>/<code>- [x]</code> and your <code>✓</code>/<code>◦</code> style). It updates automatically below.</div>
 
-    <textarea id="src" placeholder="Paste your markdown grocery list here..."></textarea>
+  <textarea id="src" placeholder="Paste your markdown grocery list here..."></textarea>
 
-    <div class="controls">
-      <label for="opt-size">Text size:</label>
-      <select id="opt-size" aria-label="Text size">
-        <option value="normal" selected>Normal</option>
-        <option value="small">Small</option>
-        <option value="large">Large</option>
-        <option value="xlarge">X-Large</option>
-      </select>
+  <div class="controls">
+    <label for="opt-size">Text size:</label>
+    <select id="opt-size" aria-label="Text size">
+      <option value="normal" selected>Normal</option>
+      <option value="small">Small</option>
+      <option value="large">Large</option>
+      <option value="xlarge">X-Large</option>
+    </select>
 
-      <span style="flex:1"></span>
-      <button class="secondary" id="btn-sample">Load Sample</button>
-      <button class="secondary" id="btn-print" title="Open print dialog">Print</button>
-    </div>
-
-    <div class="page">
-      <div id="out" class="out" aria-live="polite"></div>
-    </div>
+    <span style="flex:1"></span>
+    <button class="secondary" id="btn-sample">Load Sample</button>
+    <button id="btn-pdf" title="Open as PDF">Print PDF</button>
   </div>
 
-  <!-- logic -->
-  <script defer src="main.js"></script>
+  <div class="page">
+    <div id="out" class="out" aria-live="polite"></div>
+  </div>
+</div>
+
+<!-- 3rd-party libs for PDF generation -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+<!-- Your app code -->
+<script src="main.js?v=1.0"></script>
 </body>
 </html>
