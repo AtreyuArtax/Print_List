@@ -6,18 +6,17 @@ Snacks
 	◦	Fruit snacks
 
 Baby
-	✓	Diaper wipes
+	◦	Diaper wipes
 	✓	Pull ups
 
 Grocery
 	◦	Parmesan cheese 
 	◦	Pasta sauce 
-	◦	Butter chicken sauce
 	◦	Peanut butter
-	◦	Almond simple mills crackers
+	◦	simple mills crackers
 	◦	Tuna 
-	◦	Kirkland almond nut butter
-	✓	Coffee
+	◦	Almond nut butter
+	◦	Coffee
 	✓	Honey
 
 Side fridges
@@ -28,13 +27,15 @@ Freezer
 
 Produce 
 ◦	Mushrooms
-◦	Peppers CHECK DATE
-◦	Bananas
-  ◦  Roma tomatoes
+◦	Peppers (CHECK DATE)
+◦	green Bananas
+  ◦  tomatoes
   ◦  cucumbers
   ◦  Spring mix
   ◦  Red onion
   ◦  Avocados
+  - pears
+  - peaches
 
 Dips fridge
 	◦	Hummus (2 pack)
@@ -46,15 +47,15 @@ Meat fridge
 	◦	Feta cheese
 
 Bakery
-	◦	Tortillas keto
+	◦	Tortillas (keto)
 	◦	Bread
 
 Other
-	◦	Charmin toilet paper
-	◦	Plastic wrap
+	◦	toilet paper (Charmin)
 
 # Example of pure Markdown checklist
 ## Extra
 - [ ] Salsa
 - [x] Crackers
-- [ ] Yogurt drinks
+- [ ] garlic
+- onion

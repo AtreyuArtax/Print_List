@@ -4,6 +4,7 @@
     "spring mix": "lettuce",
     "butter lettuce": "lettuce",
     "corn on the cob": "corn",
+    "tomatoes": "tomato",
 
     "granny smith": "apple",
     "gala": "apple",
@@ -22,7 +23,7 @@
     "feta": "cheese",
     "goat cheese": "cheese",
 
-    "egg carton": "egg",
+    "egg carton": "eggs",
 
     "chicken breast": "chicken",
     "chicken thighs": "chicken",
