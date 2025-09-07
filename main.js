@@ -504,56 +504,86 @@ function enterPdfMode(outEl){
 
 async function generatePDF(){
   const outEl = document.getElementById('out');
-  if(!outEl) return;
+  if (!outEl) return;
 
-  // Wait for layout (and for the new height-aware flow) to settle
+  // 1) Ensure all images/fonts are ready (prevents html2canvas stalls)
+  const imgs = Array.from(outEl.querySelectorAll('img'));
+  await Promise.all(imgs.map(img => {
+    // force eager load (some were set to lazy)
+    img.loading = 'eager';
+    // decode() is widely supported and avoids layout jank
+    return (img.decode ? img.decode() : Promise.resolve()).catch(()=>{});
+  }));
+
+  // Let styles/layout settle
   await new Promise(r => requestAnimationFrame(()=>requestAnimationFrame(r)));
 
-  // Temporarily enforce print-like grid metrics on screen for the snapshot
+  // 2) Temporarily enforce print geometry for the snapshot
   const exit = enterPdfMode(outEl);
 
-  // Snapshot
+  // 3) Safer scale on iOS to avoid huge canvases
+  const safeScale = Math.min(2, window.devicePixelRatio || 1);
+
   const canvas = await html2canvas(outEl, {
     backgroundColor: '#ffffff',
     useCORS: true,
     allowTaint: false,
-    scale: window.devicePixelRatio || 1.5
+    scale: safeScale
   });
 
   // Revert styles
   exit();
 
+  // 4) Build PDF
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'pt', format: 'letter', orientation: 'portrait' });
 
-  // Fit to page (Letter: 612x792pt)
-  const pageW = 612, pageH = 792;
+  const pageW = 612, pageH = 792;               // Letter in pts
   const imgW = canvas.width, imgH = canvas.height;
   const ratio = Math.min(pageW / imgW, pageH / imgH);
   const w = imgW * ratio, h = imgH * ratio;
   const x = (pageW - w)/2, y = (pageH - h)/2;
 
-  doc.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', x, y, w, h);
+  // Slightly smaller JPEG for stability on iOS
+  doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', x, y, w, h);
 
-  // Check for iOS (Safari, Chrome, Firefox) and use the download method
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  const isDesktopSafari = /^((?!CriOS).)*Safari/.test(navigator.userAgent);
+  // 5) Browser handling
+  const ua = navigator.userAgent || '';
+  const isIOS = /\b(iPad|iPhone|iPod)\b/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
   if (isIOS) {
-    // For iOS, use a blob download since doc.output('dataurlnewwindow') is blocked
+    // Don't rely on a[download]; open blob in a *new tab* so your page stays put
     const pdfBlob = doc.output('blob');
     const blobUrl = URL.createObjectURL(pdfBlob);
-    const link = document.createElement('a');
-    link.href = blobUrl;
-    link.download = 'grocery_list.pdf';
-    document.body.appendChild(link);
-    link.click();
-    URL.revokeObjectURL(blobUrl);
-    link.remove();
+
+    // Feature-detect download attr support
+    const supportsDownload = 'download' in HTMLAnchorElement.prototype;
+
+    const a = document.createElement('a');
+    a.href = blobUrl;
+
+    // Target new tab to keep your app page in session history
+    a.target = '_blank';
+    a.rel = 'noopener';
+
+    // If supported, set a filename (best effort; iOS often ignores it)
+    if (supportsDownload) a.download = 'grocery_list.pdf';
+
+    document.body.appendChild(a);
+    a.click();
+
+    // IMPORTANT: delay revoke; immediate revoke can cancel the load on iOS
+    setTimeout(() => {
+      URL.revokeObjectURL(blobUrl);
+      a.remove();
+    }, 5000);
   } else {
-    // For all other browsers, open in a new tab which is a better user experience
+    // Desktop/Android: opening a data URL is fine UX-wise
+    // (You can also use doc.save('grocery_list.pdf') if you prefer a forced download.)
     doc.output('dataurlnewwindow');
   }
 }
+
 
 /* =========================
    Text size control
