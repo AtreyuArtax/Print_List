@@ -506,83 +506,68 @@ async function generatePDF(){
   const outEl = document.getElementById('out');
   if (!outEl) return;
 
-  // 1) Ensure all images/fonts are ready (prevents html2canvas stalls)
+  // Ensure icons are decoded (we’ll also add crossOrigin below)
   const imgs = Array.from(outEl.querySelectorAll('img'));
   await Promise.all(imgs.map(img => {
-    // force eager load (some were set to lazy)
     img.loading = 'eager';
-    // decode() is widely supported and avoids layout jank
     return (img.decode ? img.decode() : Promise.resolve()).catch(()=>{});
   }));
-
-  // Let styles/layout settle
   await new Promise(r => requestAnimationFrame(()=>requestAnimationFrame(r)));
 
-  // 2) Temporarily enforce print geometry for the snapshot
   const exit = enterPdfMode(outEl);
 
-  // 3) Safer scale on iOS to avoid huge canvases
-  const safeScale = Math.min(2, window.devicePixelRatio || 1);
+  const isIOS = /\b(iPad|iPhone|iPod)\b/i.test(navigator.userAgent)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  // Bigger scale for desktop (crisper), conservative on iOS (stability)
+  const scale = isIOS ? 2 : Math.min(3, (window.devicePixelRatio || 1) * 2);
 
   const canvas = await html2canvas(outEl, {
     backgroundColor: '#ffffff',
     useCORS: true,
     allowTaint: false,
-    scale: safeScale
+    imageTimeout: 0,
+    scale
   });
 
-  // Revert styles
   exit();
 
-  // 4) Build PDF
+  // Optional: reduce blurring when downscaling small icons
+  const ctx = canvas.getContext('2d');
+  if (ctx) ctx.imageSmoothingEnabled = false;
+
+  // Make PDF page match the canvas aspect & size in points:
+  // 1 CSS px @96dpi ≈ 0.75 pt (72/96)
+  const pxToPt = 0.75;
+  const pdfWpt = canvas.width * pxToPt;
+  const pdfHpt = canvas.height * pxToPt;
+
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'pt', format: 'letter', orientation: 'portrait' });
+  const doc = new jsPDF({ unit: 'pt', format: [pdfWpt, pdfHpt], orientation: pdfWpt >= pdfHpt ? 'landscape' : 'portrait' });
 
-  const pageW = 612, pageH = 792;               // Letter in pts
-  const imgW = canvas.width, imgH = canvas.height;
-  const ratio = Math.min(pageW / imgW, pageH / imgH);
-  const w = imgW * ratio, h = imgH * ratio;
-  const x = (pageW - w)/2, y = (pageH - h)/2;
-
-  // Slightly smaller JPEG for stability on iOS
-  doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', x, y, w, h);
-
-  // 5) Browser handling
-  const ua = navigator.userAgent || '';
-  const isIOS = /\b(iPad|iPhone|iPod)\b/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  // Use PNG for sharper edges (UI/icons/text)
+  const dataUrl = canvas.toDataURL('image/png');
+  doc.addImage(dataUrl, 'PNG', 0, 0, pdfWpt, pdfHpt, undefined, 'FAST');
 
   if (isIOS) {
-    // Don't rely on a[download]; open blob in a *new tab* so your page stays put
-    const pdfBlob = doc.output('blob');
-    const blobUrl = URL.createObjectURL(pdfBlob);
-
-    // Feature-detect download attr support
-    const supportsDownload = 'download' in HTMLAnchorElement.prototype;
-
+    const blob = doc.output('blob');
+    const url  = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = blobUrl;
-
-    // Target new tab to keep your app page in session history
+    a.href = url;
     a.target = '_blank';
     a.rel = 'noopener';
-
-    // If supported, set a filename (best effort; iOS often ignores it)
-    if (supportsDownload) a.download = 'grocery_list.pdf';
-
+    // iOS often ignores filename, but set it anyway:
+    if ('download' in HTMLAnchorElement.prototype) a.download = 'grocery_list.pdf';
     document.body.appendChild(a);
     a.click();
-
-    // IMPORTANT: delay revoke; immediate revoke can cancel the load on iOS
-    setTimeout(() => {
-      URL.revokeObjectURL(blobUrl);
-      a.remove();
-    }, 5000);
+    setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 5000);
   } else {
-    // Desktop/Android: opening a data URL is fine UX-wise
-    // (You can also use doc.save('grocery_list.pdf') if you prefer a forced download.)
+    // Desktop: either open a tab or force save
+    // doc.save('grocery_list.pdf');
     doc.output('dataurlnewwindow');
   }
 }
+
 
 
 /* =========================
