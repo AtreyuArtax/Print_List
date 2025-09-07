@@ -55,6 +55,12 @@ li.item{display:flex;align-items:center;gap:.55rem;font-size:var(--item-size)}
 .item-label{flex:1; display:inline-flex; align-items:center; gap:.35rem; flex-wrap:wrap}
 .empty-note{color:var(--muted);font-style:italic;margin:.4rem 0 .2rem}
 
+body, #out, .item-label, .list-title, .section {
+  font-family: "Inter", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400; /* avoid very thin weights, keeps raster sharp */
+}
+
+
 /* Icons (screen + PDF) */
 .item-label .icon{
   display:inline-flex;
@@ -89,6 +95,18 @@ li.item{display:flex;align-items:center;gap:.55rem;font-size:var(--item-size)}
   gap: 16px;
 }
 .quad{break-inside:avoid}
+
+/* Font smoothing & text rendering for crisper html2canvas snapshots */
+#out,
+.grid4,
+.item-label,
+.section,
+.list-title {
+  -webkit-font-smoothing: antialiased;    /* Safari / Chrome */
+  -moz-osx-font-smoothing: grayscale;     /* Firefox on macOS */
+  text-rendering: geometricPrecision;     /* Hint to render for accuracy */
+}
+
 
 /* Browser print (Ctrl/Cmd+P). NOTE: our PDF export does NOT use this block. */
 @media print{

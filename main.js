@@ -506,21 +506,33 @@ async function generatePDF(){
   const outEl = document.getElementById('out');
   if (!outEl) return;
 
-  // Ensure icons are decoded (we’ll also add crossOrigin below)
+  // Ensure fonts & images are ready (crisper canvas)
+  if (document.fonts && document.fonts.ready) {
+    try { await document.fonts.ready; } catch {}
+  }
   const imgs = Array.from(outEl.querySelectorAll('img'));
   await Promise.all(imgs.map(img => {
     img.loading = 'eager';
     return (img.decode ? img.decode() : Promise.resolve()).catch(()=>{});
   }));
+
+  // Let layout fully settle
   await new Promise(r => requestAnimationFrame(()=>requestAnimationFrame(r)));
 
+  // Temporarily apply print geometry for the snapshot
   const exit = enterPdfMode(outEl);
 
-  const isIOS = /\b(iPad|iPhone|iPod)\b/i.test(navigator.userAgent)
+  // Choose a crisp-but-safe scale (avoid iOS memory blowups)
+  const isiOS = /\b(iPad|iPhone|iPod)\b/i.test(navigator.userAgent)
     || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-  // Bigger scale for desktop (crisper), conservative on iOS (stability)
-  const scale = isIOS ? 2 : Math.min(3, (window.devicePixelRatio || 1) * 2);
+  const pageCSSw = 816, pageCSSh = 1056;   // Letter @ 96dpi in CSS px
+  const maxPixels = isiOS ? 16e6 : 48e6;   // rough caps
+  let scale = isiOS ? 2 : 4;               // target crispness
+
+  while ((pageCSSw * pageCSSh * scale * scale) > maxPixels && scale > 1.5) {
+    scale -= 0.5;
+  }
 
   const canvas = await html2canvas(outEl, {
     backgroundColor: '#ffffff',
@@ -530,45 +542,40 @@ async function generatePDF(){
     scale
   });
 
+  // Revert temporary styles
   exit();
 
-  // Optional: reduce blurring when downscaling small icons
+  // Optional: helps tiny icons when downscaling
   const ctx = canvas.getContext('2d');
   if (ctx) ctx.imageSmoothingEnabled = false;
 
-  // Make PDF page match the canvas aspect & size in points:
-  // 1 CSS px @96dpi ≈ 0.75 pt (72/96)
-  const pxToPt = 0.75;
+  // Match PDF page to canvas size to avoid any resampling
+  const pxToPt = 0.75; // 72/96
   const pdfWpt = canvas.width * pxToPt;
   const pdfHpt = canvas.height * pxToPt;
 
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'pt', format: [pdfWpt, pdfHpt], orientation: pdfWpt >= pdfHpt ? 'landscape' : 'portrait' });
+  const doc = new jsPDF({ unit: 'pt', format: [pdfWpt, pdfHpt] });
 
-  // Use PNG for sharper edges (UI/icons/text)
+  // Use PNG for sharper text/edges
   const dataUrl = canvas.toDataURL('image/png');
   doc.addImage(dataUrl, 'PNG', 0, 0, pdfWpt, pdfHpt, undefined, 'FAST');
 
-  if (isIOS) {
+  if (isiOS) {
     const blob = doc.output('blob');
     const url  = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.target = '_blank';
     a.rel = 'noopener';
-    // iOS often ignores filename, but set it anyway:
     if ('download' in HTMLAnchorElement.prototype) a.download = 'grocery_list.pdf';
     document.body.appendChild(a);
     a.click();
     setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 5000);
   } else {
-    // Desktop: either open a tab or force save
-    // doc.save('grocery_list.pdf');
-    doc.output('dataurlnewwindow');
+    doc.output('dataurlnewwindow'); // or doc.save('grocery_list.pdf');
   }
 }
-
-
 
 /* =========================
    Text size control
