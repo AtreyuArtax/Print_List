@@ -20,7 +20,6 @@
 
     "cheddar": "cheese",
     "havarti": "cheese",
-    "feta": "cheese",
     "goat cheese": "cheese",
 
     "egg carton": "eggs",
@@ -74,9 +73,8 @@
     "tomato sauce": "pasta_sauce",
     "spaghetti sauce": "pasta_sauce",
 
-    "tortilla": "wrap",
-    "tortillas": "wrap",
-    "wraps": "wrap",
+    "wrap": "tortilla",
+    "wraps": "tortilla",
 
     "rolled oats": "oats",
     "steel cut oats": "oats",
@@ -96,6 +94,12 @@
     "bathroom tissue": "toilet_paper",
     "tp": "toilet_paper",
     "toilet rolls": "toilet_paper",
-    "toilet roll": "toilet_paper"
+    "toilet roll": "toilet_paper",
+    
+    "parmesan cheese": "parmesan",
+
+    "feta cheese": "feta",
+
+    "made good bars": "made_good"
   }
 }

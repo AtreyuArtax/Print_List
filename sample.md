@@ -2,20 +2,20 @@ Costco List
 Snacks
 	✓	Granola bars
 	✓	Made Good bars
-	◦	Heavenly hunk
+	◦	Heavenly hunks
 	◦	Fruit snacks
 
 Baby
-	◦	Diaper wipes
-	✓	Pull ups
+	◦	wet wipes
+	✓	diapers
 
 Grocery
 	◦	Parmesan cheese 
 	◦	Pasta sauce 
 	◦	Peanut butter
-	◦	simple mills crackers
+	◦	crackers (simple mills almond)
 	◦	Tuna 
-	◦	Almond nut butter
+	◦	Almond butter
 	◦	Coffee
 	✓	Honey
 
@@ -38,7 +38,7 @@ Produce
   - peaches
 
 Dips fridge
-	◦	Hummus (2 pack)
+	◦	hummus
 
 Back Dairy Fridge
 	✓	Eggs (30 tray)
@@ -47,7 +47,7 @@ Meat fridge
 	◦	Feta cheese
 
 Bakery
-	◦	Tortillas (keto)
+	◦	tortilla
 	◦	Bread
 
 Other

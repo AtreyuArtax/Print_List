@@ -18,7 +18,7 @@ let SYNONYMS  = {};        // "ripe banana" -> "banana, "bell pepper" -> "pepper
 //   if (!res.ok) throw new Error(`icon-map.json fetch failed: ${res.status} ${res.statusText}`);
 //   const data = await res.json();
 //   ICON_KEYS = new Set(data.canonical || []);
-//   SYNONYMS  = data.synonyms  || {};
+///  SYNONYMS  = data.synonyms  || {};
 //   console.log('[icon-map] loaded:', ICON_KEYS.size, 'keys,', Object.keys(SYNONYMS).length, 'synonyms');
 // }
 
@@ -70,11 +70,16 @@ function normalize(s) {
     .toLowerCase()
     .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
 
-    // 3) Unify separators and drop punctuation
-    .replace(/[_/\\]/g, ' ')           // underscores/slashes → space
-    .replace(/[^\w\s-]/g, ' ')           // drop other punctuation
+    // 3) Strip possessives before generic punctuation handling
+    //    NEW: prevents "kids’ yogurt" → "kid yogurt" side-effects in plural logic
+    .replace(/['’]s\b/g, '')            // remove ’s / 's
+    .replace(/\b['’]\b/g, '')           // dangling apostrophes between words
 
-    // 4) Collapse whitespace
+    // 4) Unify separators and drop punctuation
+    .replace(/[_/\\]/g, ' ')            // underscores/slashes → space
+    .replace(/[^\w\s-]/g, ' ')          // drop other punctuation
+
+    // 5) Collapse whitespace
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -93,11 +98,12 @@ function stripModifiers(text) {
   return kept.join(' ') || text; // keep original if we stripped everything
 }
 
-// Basic plural → singular handling for grocery words
+// Basic plural → singular handling for grocery words (unchanged)
+// Protects -us endings (e.g., hummus) from being truncated.
 function singularizeWord(w) {
-  if (/ies$/.test(w)) return w.replace(/ies$/, 'y');         // berries -> berry
+  if (/ies$/.test(w)) return w.replace(/ies$/, 'y');               // berries -> berry
   if (/(ches|shes|xes|zes)$/.test(w)) return w.replace(/es$/, ''); // boxes -> box, dishes -> dish
-  if (/oes$/.test(w)) return w.replace(/es$/, 'o');           // tomatoes -> tomato
+  if (/oes$/.test(w)) return w.replace(/es$/, 'o');                 // tomatoes -> tomato
   if (/s$/.test(w) && !/(ss|us)$/.test(w)) return w.replace(/s$/, ''); // apples -> apple
   return w;
 }
