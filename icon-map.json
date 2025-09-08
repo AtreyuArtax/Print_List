@@ -52,7 +52,10 @@
 
     "loaf": "bread",
     "buns": "bread",
-    "naan": "bread",
+    "hot dog": "sausage",
+    "hot dogs": "sausage",
+    "hamburger": "burger",
+    "hamburgers": "burger",
 
     "hummous": "hummus",
 
@@ -65,9 +68,23 @@
 
     "manuka honey": "honey",
 
-    "potato chips": "chips",
-    "tortilla chips": "chips",
-    "snack chips": "chips",
+    "potato chips": "chip",
+    "potato chip": "chip",
+    "tortilla chips": "chip",
+    "snack chips": "chip",
+
+    "Bubly": "soda",
+    "pop": "soda",
+    "Coke": "soda",
+    "Coca-Cola": "soda",
+    "Pepsi": "soda",
+    "seltzer": "soda",
+
+    "green beans": "bean",
+    "green bean": "bean",
+    "string beans": "bean",
+    "snap peas": "bean",
+
 
     "marinara sauce": "pasta_sauce",
     "tomato sauce": "pasta_sauce",
